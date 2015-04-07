@@ -66,27 +66,31 @@
         var selectedItem = $(this).val();                              // Text des gewählten Dropdownitems lesen
         // --> SELECT description FROM sweets WHERE name=content
         $.getJSON("../json/sweets.json", function fetchRows(data) {        // JSON-Datei laden (RDBMS: FROM sweets)
-            $.each(data, function fetchFields() {                          // Für jeden Datensatz.. (RDBMS: Für jede Zeile)
-                if (this.description == selectedItem) {                    // Finde das JSON-Objekt (RDBMS: "Datensatz"), zu dem das angeklickte item gehört (RDBMS:
-                    // WHERE name = content)
+            //Dein $.each ist normalerweise dafür da, um über den Inhalt (Liste) eines DOM-Elements zu iterieren.
+            //So wie du es verwendet hast klappt das nicht.
+            //Da du nicht über ein DOM-Element iteriert hast hat auch dein "this" nicht funktioniert.
+            //Ich hab habs hier mal mit einer normalen For-Schleife implementiert.
+            for(var i = 0; i < data.length; i++){
+                if(data[i].description === selectedItem){
+                    var mySweets = data[i];
                     $('.fade_content').empty();
                     //$('.fade_content').fadeOut("fast", function showContent() {         // Blende den alten Content aus
-                    $('#header').text(this.description);                   // Wähle einen bestimmten Teil des JSON-Objektes
+                    $('#header').text(mySweets.description);                   // Wähle einen bestimmten Teil des JSON-Objektes
                                                                            // und verarbeite es (RDBMS: SELECT examples)
-                    $("#text").html(this.examples);                        // Ebenso mit der Description
-                    socket.emit('chat message', "sweets_id= " + this.sweets_id);
+                    $("#text").html(mySweets.examples);                        // Ebenso mit der Description
+                    socket.emit('chat message', "sweets_id= " + mySweets.sweets_id);
 
-                    for (var i = 0; i < this.img.length; i++) {
-                        $('#messages').append("<li>Visuals-Array: " + this.img[i] + "</li>");
+                    for (var j = 0; j < mySweets.img.length; j++) {
+                        $('#messages').append("<li>Visuals-Array: " + mySweets.img[j] + "</li>");
 
                         var newNode = document.createElement('div');
-                        newNode.setAttribute('id', 'visual_' + i);
+                        newNode.setAttribute('id', 'visual_' + j);
                         $('#visuals_container').append(newNode);
-                        pictureOrVideo(newNode, this.img[i]);
+                        pictureOrVideo(newNode, mySweets.img[j]);
 
                     }
                 }
-            });
+            }
         });
     });
 

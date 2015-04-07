@@ -1,7 +1,6 @@
 // Is MySQL on?
 
 var express = require('express');
-var http = require('http');
 //var fs = require('fs');
 var multer = require('multer');          // File Upload / Middleware zum Parsen von Multipart forms
 var db = require('./scripts_server/db.js');             // Datenbank-Operationen
