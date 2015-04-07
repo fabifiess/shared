@@ -70,7 +70,7 @@ app.post('/upload', function (req, res) {
  */
 
 io.on('connection', function (socket) {          // mit dem Parameter (socket ist ein beliebiger Name), wird der anonymen Funktion eine Referenz auf
-                                                 // Socket.io weitergegeben
+    // Socket.io weitergegeben
     socket.on('chat message', function (msg) {   // "on": Empfangen, "emit": Senden;
         console.log('message: ' + msg);
         io.emit('chat message', msg);

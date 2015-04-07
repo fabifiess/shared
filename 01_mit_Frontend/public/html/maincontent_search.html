@@ -29,13 +29,10 @@
 </table>
 
 <script>
-
-//alert("ahoi from maincontainer_search");
-
+    //alert("ahoi from maincontainer_search");
     /*
      Fill dropdown menu with data from the database
      */
-
     (function loadDropdown() {
         $.getJSON("../json/sweets.json", function (data) {
             $('#dropdown').empty();
@@ -44,23 +41,18 @@
                 dropdownarray.push(val.description);  // Array-Elemente in ein Array schreiben
             });
             dropdownarray.sort();
-
             dropdownarray.sort(function (a, b) {      // Sort regardless of upper/lower case
                 return a.toLowerCase().localeCompare(b.toLowerCase());
             });
-
             dropdownarray.unshift("Favorite Sweet"); // Am Anfang einfügen
             for (var i = 0; i < dropdownarray.length; i++) {
                 $('#dropdown').append("<option>" + dropdownarray[i] + "</option>");
             }
         });
     })();
-
-
     /*
      When an item in the dropdown menu is selected the content of the page will be loaded
      */
-
     $('#dropdown').change(function fetchData() {
         videocounter = 0;
         var selectedItem = $(this).val();                              // Text des gewählten Dropdownitems lesen
@@ -76,28 +68,23 @@
                     $('.fade_content').empty();
                     //$('.fade_content').fadeOut("fast", function showContent() {         // Blende den alten Content aus
                     $('#header').text(mySweets.description);                   // Wähle einen bestimmten Teil des JSON-Objektes
-                                                                           // und verarbeite es (RDBMS: SELECT examples)
+                    // und verarbeite es (RDBMS: SELECT examples)
                     $("#text").html(mySweets.examples);                        // Ebenso mit der Description
                     socket.emit('chat message', "sweets_id= " + mySweets.sweets_id);
-
                     for (var j = 0; j < mySweets.img.length; j++) {
                         $('#messages').append("<li>Visuals-Array: " + mySweets.img[j] + "</li>");
-
                         var newNode = document.createElement('div');
                         newNode.setAttribute('id', 'visual_' + j);
                         $('#visuals_container').append(newNode);
                         pictureOrVideo(newNode, mySweets.img[j]);
-
                     }
                 }
             }
         });
     });
-
     /*
      Decide whether a picture or a video will be added to id="img"
      */
-
     function pictureOrVideo(div, visual) {
         // Extract file extension from file name
         dateityp = visual.trim().split('.').pop();
@@ -110,22 +97,16 @@
         if (dateityp == "ogg")fillVideo(div, visual);
         if (dateityp == "webm")fillVideo(div, visual);
     }
-
     /*
      Add a picture to id="img"
      */
-
     function fillPicture(div, visual) {
         var bild = '<a class="fancybox" href=\'../img/' + visual + '\' ><img src=\'../img/' + visual + '\' height="100px" /></a>';
-
         $(div).html(bild);
     }
-
-
     /*
      Add a video to id="img"
      */
-
     function fillVideo(div, visual) {
         var video = '<video class="video-js vjs-default-skin vjs-big-play-centered video-js-fullscreen"' +
                     'controls preload="auto" width="480" height="270" ' +
@@ -142,6 +123,3 @@
         });
     }
 </script>
-
-
-
