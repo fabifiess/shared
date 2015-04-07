@@ -1,0 +1,117 @@
+/* ----------------- Form Elements ----------------- */
+
+html, body {
+    font-family: 'HelveticaNeueLTCom-Th', sans-serif;
+    src: url("../fonts/HelveticaNeueLTCom-Th.ttf");
+    font-size: 15px;
+}
+
+.formlabel {
+    vertical-align: top;
+    padding-top: 23px;
+    padding-right: 20px;
+}
+
+.uploadform input[type=text], .uploadform input[type=submit]{
+    margin-bottom: -20px;
+    padding: 6px 9px 6px 12px;
+    width: 300px;
+    border: 1px solid #000;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.uploadform textarea {
+    /*display:block;*/
+    padding: 6px 4px;
+    padding-left: 12px;
+    height: 100px;
+    width: 305px;
+    border: 1px solid #000;
+    overflow: auto;
+    border-radius: 20px;
+}
+
+/* File Upload Button */
+
+/* Einschränken des sichtbaren Ausschnitts */
+#fileupload01 {
+    position: absolute;
+    clip: rect(0px 106px 35px 0px);
+}
+
+/* Upload Button ausblenden */
+#fileupload01::-webkit-file-upload-button {
+    visibility: hidden;
+    opacity: 0;
+}
+
+#fileupload01:before {
+    /* Beschriftung des Buttons mit CSS content */
+    content: 'Bild / Video';
+    display: inline-block;
+    width: 83px;
+    padding: 6px 9px 6px 12px;
+
+    border: 1px solid #000;
+    border-radius: 20px;
+    text-align: center;
+}
+
+#fileupload01:hover:before {
+    border-color:#666;
+    color: #666;
+}
+
+#fileupload01:active:before {
+    border-color:#db0031;
+    color: #db0031;
+}
+
+
+
+/*Submit button*/
+.uploadform input.submit {
+    width: 110px;
+    padding: 8px 9px 8px 9px;
+    background-color: #000;
+    color: #fff;
+    border-color: #000;
+    font-size: 15px;
+}
+
+.uploadform input.submit:hover {
+    background-color: #666;
+    border-color: #666;
+}
+
+.uploadform input.submit:active {
+    background-color: #db0031; /* ICT Rot */
+    border-color: #db0031; /* ICT Rot */
+}
+
+/* ----------- jQuery Validation ----------- */
+
+/* Error message */
+.uploadform p {
+    position: relative;
+}
+
+.uploadform label.error {
+    /* Position error message into text field */
+    position: absolute;
+    top: 11px;
+    right: 17px;
+    color: #ffaaaa; /* rot */
+    font-size: 13px;
+}
+
+/* Error Red border */
+.uploadform input.error, .uploadform textarea.error {
+    border: 1px solid #ff9999; /* rot */
+}
+
+/* Valid Green border */
+.uploadform input.valid, .uploadform textarea.valid {
+    border: 1px solid #42CDA1; /* grün */
+}

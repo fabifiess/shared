@@ -1,0 +1,143 @@
+<!-- video-js -->
+<link href="../css/video-js.css" rel="stylesheet">
+<script src="../js/video.js"></script>
+
+
+<table id="maincontent_table">
+    <tr>
+        <td id="maincontent_caption">Choose sweet</td>
+    </tr>
+    <tr>
+        <td id="maincontent_table_left">
+            <!-- By selecting an item in this dropdown menu, the content of the page will be loaded dynamically-->
+            <p><select id="dropdown"> </select></p>
+            <!-- Placeholder for text-->
+            <p>
+            <div id="text" class="fade_content"></div>
+            </p>
+            <p>
+            <div id="log"></div>
+            <!-- Socket-IO Msg -->
+            <ul id="messages"></ul>
+            </p>
+        </td>
+        <td id="maincontent_table_right">
+            <!-- Placeholder for a dynamically loaded image (picture or video) when an item of'#dropdown' is selected -->
+            <div id="visuals_container" class="fade_content"></div>
+        </td>
+    </tr>
+</table>
+
+<script>
+
+//alert("ahoi from maincontainer_search");
+
+    /*
+     Fill dropdown menu with data from the database
+     */
+
+    (function loadDropdown() {
+        $.getJSON("../json/sweets.json", function (data) {
+            $('#dropdown').empty();
+            var dropdownarray = [];
+            $.each(data, function (key, val) {        // push all data from column "description" into array and sort it by alphabet
+                dropdownarray.push(val.description);  // Array-Elemente in ein Array schreiben
+            });
+            dropdownarray.sort();
+
+            dropdownarray.sort(function (a, b) {      // Sort regardless of upper/lower case
+                return a.toLowerCase().localeCompare(b.toLowerCase());
+            });
+
+            dropdownarray.unshift("Favorite Sweet"); // Am Anfang einfügen
+            for (var i = 0; i < dropdownarray.length; i++) {
+                $('#dropdown').append("<option>" + dropdownarray[i] + "</option>");
+            }
+        });
+    })();
+
+
+    /*
+     When an item in the dropdown menu is selected the content of the page will be loaded
+     */
+
+    $('#dropdown').change(function fetchData() {
+        videocounter = 0;
+        var selectedItem = $(this).val();                              // Text des gewählten Dropdownitems lesen
+        // --> SELECT description FROM sweets WHERE name=content
+        $.getJSON("../json/sweets.json", function fetchRows(data) {        // JSON-Datei laden (RDBMS: FROM sweets)
+            $.each(data, function fetchFields() {                          // Für jeden Datensatz.. (RDBMS: Für jede Zeile)
+                if (this.description == selectedItem) {                    // Finde das JSON-Objekt (RDBMS: "Datensatz"), zu dem das angeklickte item gehört (RDBMS:
+                    // WHERE name = content)
+                    $('.fade_content').empty();
+                    //$('.fade_content').fadeOut("fast", function showContent() {         // Blende den alten Content aus
+                    $('#header').text(this.description);                   // Wähle einen bestimmten Teil des JSON-Objektes
+                                                                           // und verarbeite es (RDBMS: SELECT examples)
+                    $("#text").html(this.examples);                        // Ebenso mit der Description
+                    socket.emit('chat message', "sweets_id= " + this.sweets_id);
+
+                    for (var i = 0; i < this.img.length; i++) {
+                        $('#messages').append("<li>Visuals-Array: " + this.img[i] + "</li>");
+
+                        var newNode = document.createElement('div');
+                        newNode.setAttribute('id', 'visual_' + i);
+                        $('#visuals_container').append(newNode);
+                        pictureOrVideo(newNode, this.img[i]);
+
+                    }
+                }
+            });
+        });
+    });
+
+    /*
+     Decide whether a picture or a video will be added to id="img"
+     */
+
+    function pictureOrVideo(div, visual) {
+        // Extract file extension from file name
+        dateityp = visual.trim().split('.').pop();
+        // Check file extension
+        if (dateityp == "jpg")fillPicture(div, visual);
+        if (dateityp == "jpeg")fillPicture(div, visual);
+        if (dateityp == "png")fillPicture(div, visual);
+        if (dateityp == "bmp")fillPicture(div, visual);
+        if (dateityp == "mp4")fillVideo(div, visual);
+        if (dateityp == "ogg")fillVideo(div, visual);
+        if (dateityp == "webm")fillVideo(div, visual);
+    }
+
+    /*
+     Add a picture to id="img"
+     */
+
+    function fillPicture(div, visual) {
+        var bild = '<a class="fancybox" href=\'../img/' + visual + '\' ><img src=\'../img/' + visual + '\' height="100px" /></a>';
+
+        $(div).html(bild);
+    }
+
+
+    /*
+     Add a video to id="img"
+     */
+
+    function fillVideo(div, visual) {
+        var video = '<video class="video-js vjs-default-skin vjs-big-play-centered video-js-fullscreen"' +
+                    'controls preload="auto" width="480" height="270" ' +
+                    'autoplay ' +
+                    'data-setup=\'{ "example_option": true}\'' +
+                    '>' +
+                    '<source src="../img/' + visual + '" type="video/mp4"/>' +
+                    '</video>';
+        $(div).html(video);
+        videojs(document.getElementsByClassName("video-js")[videocounter], {}, function () {
+            // Player (this) is initialized and ready.
+            this.play();
+            videocounter++;
+        });
+    }
+</script>
+
+
+

@@ -1,0 +1,85 @@
+
+
+<style>
+
+</style>
+
+<table id="maincontent_table">
+    <tr>
+        <td id="maincontent_caption">Upload Form</td>
+    </tr>
+    <tr>
+        <td id="maincontent_table_left">
+            <!--Data Form-->
+            <form id="uploadform" class="uploadform" method="post" action="/upload" enctype="multipart/form-data">
+
+
+                <table>
+                    <tr>
+                        <td class="formlabel">Name</td>
+                        <td><p><input type="text" id="description" name="description" placeholder="Name"></p></td>
+                    </tr>
+                    <tr>
+                        <td class="formlabel">Beispiele</td>
+                        <td><p><input type="text" id="examples" name="examples" placeholder="Beispiele"></p></td>
+                    </tr>
+
+                    <!--Textarea-->
+
+                    <!--<tr>-->
+                    <!--<td class="formlabel"> Beschreibung</td>-->
+                    <!--<td><p><textarea id="comments" name="comments" placeholder="Beschreibung"></textarea></p></td>-->
+                    <!--</tr>-->
+
+                    <tr style="margin-top:24px;">
+                        <td class="formlabel">Visuals</td>
+                        <td><input type="file" id="fileupload01" name="img1" ></td>
+                    </tr>
+
+                    <tr>
+                        <td class="formlabel"><br/><input type="submit" class="submit" value="Speichern"></td>
+                    </tr>
+                </table>
+
+
+            </form>
+        </td>
+        <td id="maincontent_table_right">
+        </td>
+    </tr>
+</table>
+
+<script>
+
+//    alert("ahoi from maincontent_new");
+
+
+    /* Form Validation */
+    $(document).ready(function () {
+        $(".uploadform").validate({
+            rules: {
+                description: {
+                    required: true,
+                    minlength: 5
+                },
+                examples: {
+                    required: false
+                },
+                img1: {
+                    required: false
+                }
+            },
+            messages: {
+                description: "Pflichtfeld"
+            }
+        });
+    });
+
+</script>
+
+
+
+
+
+
+<script type="text/javascript" src="../js/main.js"></script>
