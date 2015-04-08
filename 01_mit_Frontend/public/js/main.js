@@ -18,14 +18,15 @@ var videocounter = 0;
 
 // "+" Icon
 
-$('#header_new').click(function () {
+$('#header_new').unbind("click").click(function(){
     $("#maincontainer").load("./maincontent_new.html");
     $("#sidebarcontainer").load("./sidebarcontent_new.html");
 });
 
 
+
 // Lupen-Icon
-$('#header_search').click(function () {
+$('#header_search').unbind("click").click(function(){
     $("#maincontainer").load("./maincontent_search.html");
     $("#sidebarcontainer").load("./sidebarcontent_search.html");
 });
@@ -96,9 +97,10 @@ $('#maincontent_table_right').css("height", ($(document).height() - 190));
 // Socket.io-Verbindung
 var socket = io();
 
-socket.on('chat message', function (msg) {
-    $('#messages').append($('<li>').text("Received from socketio: " + msg));
-});
+
+//socket.on('chat message', function (msg) {
+//    $('#messages').append($('<li>').text("Received from socketio: " + msg));
+//});
 
 
 /*

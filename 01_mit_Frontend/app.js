@@ -1,6 +1,7 @@
 // Is MySQL on?
 
 var express = require('express');
+var http = require('http');
 //var fs = require('fs');
 var multer = require('multer');          // File Upload / Middleware zum Parsen von Multipart forms
 var db = require('./scripts_server/db.js');             // Datenbank-Operationen
@@ -70,7 +71,7 @@ app.post('/upload', function (req, res) {
  */
 
 io.on('connection', function (socket) {          // mit dem Parameter (socket ist ein beliebiger Name), wird der anonymen Funktion eine Referenz auf
-    // Socket.io weitergegeben
+                                                 // Socket.io weitergegeben
     socket.on('chat message', function (msg) {   // "on": Empfangen, "emit": Senden;
         console.log('message: ' + msg);
         io.emit('chat message', msg);
